@@ -16,7 +16,7 @@ pipeline {
             steps {
                 script {
                     // Build the Docker image
-                    sh 'sudo docker build -t ${DOCKER_IMAGE_NAME} .'
+                    sh 'docker build -t ${DOCKER_IMAGE_NAME} .'
                 }
             }
         }
@@ -25,7 +25,7 @@ pipeline {
             steps {
                 script {
                     // Run the Docker container
-                    sh 'sudo docker run -d --name ${DOCKER_IMAGE_NAME}-container ${DOCKER_IMAGE_NAME}'
+                    sh 'docker run -d --name ${DOCKER_IMAGE_NAME}-container ${DOCKER_IMAGE_NAME}'
                 }
             }
         }
@@ -34,7 +34,7 @@ pipeline {
             steps {
                 script {
                     // Run tests inside the running Docker container
-                    sh 'sudo docker exec ${DOCKER_IMAGE_NAME}-container npm test'
+                    sh 'docker exec ${DOCKER_IMAGE_NAME}-container npm test'
                 }
             }
         }
@@ -45,7 +45,7 @@ pipeline {
                     // Placeholder for deployment steps
                     echo "Deploying application..."
                     // Example: push Docker image to registry or deploy the container
-                    // sh 'sudo docker push ${DOCKER_IMAGE_NAME}' (if using a Docker registry)
+                    // sh 'docker push ${DOCKER_IMAGE_NAME}' (if using a Docker registry)
                 }
             }
         }
@@ -54,8 +54,8 @@ pipeline {
             steps {
                 script {
                     // Stop and remove the Docker container and image
-                    sh 'sudo docker stop ${DOCKER_IMAGE_NAME}-container'
-                    sh 'sudo docker rm ${DOCKER_IMAGE_NAME}-container'
+                    sh 'docker stop ${DOCKER_IMAGE_NAME}-container'
+                    sh 'docker rm ${DOCKER_IMAGE_NAME}-container'
                 }
             }
         }
@@ -64,7 +64,7 @@ pipeline {
     post {
         always {
             // Clean up Docker images and containers after the pipeline
-            sh 'sudo docker rmi ${DOCKER_IMAGE_NAME}'
+            sh 'docker rmi ${DOCKER_IMAGE_NAME}'
         }
         success {
             // Notify on success (can be enhanced with real notifications)
